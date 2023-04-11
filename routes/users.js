@@ -53,7 +53,6 @@ router.post('/login', async (req, res) => {
   }
   
   const userExist = await User.findOne({ where: { email: req.body.email } });
-  console.log(userExist);
 
   if(userExist !== null){
     if (await verifyPasswordOption1(req.body.password, userExist.password)) {
