@@ -55,5 +55,8 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'carts'
   });
 
+  // User.associate = function(models) {
+  // };
+
   return Cart;
 }

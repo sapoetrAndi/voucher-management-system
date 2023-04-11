@@ -56,4 +56,33 @@ router.post('/category', async (req, res) => {
   });
 });
 
+router.post('/add-voucher', async (req, res) => {
+  const schema = {
+    voucher_code: 'string',
+    voucher_name: 'string',
+    category_id: 'string',
+    user_id: 'string',
+    product_id: 'string',
+    quantity: 'number',
+    price: 'number',
+  }
+
+  const validate = v.validate(req.body, schema);
+
+  if(validate.length){
+    return res
+    .status(400)
+    .json(validate);
+  }
+
+  const save = await Cart.create(req.body);
+
+  return res
+  .status(200)
+  .json({
+    code:"200",
+    message: "success"
+  });
+});
+
 module.exports = router;
