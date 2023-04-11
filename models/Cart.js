@@ -55,8 +55,12 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'carts'
   });
 
-  // User.associate = function(models) {
-  // };
+  Cart.associate = function(models) {
+    Cart.belongsTo(models.User, { foreignKey: 'user_id' });
+    Cart.belongsTo(models.Product_category, { foreignKey: 'category_id' });
+    Cart.belongsTo(models.Product, { foreignKey: 'product_id' });
+    Cart.belongsTo(models.Voucher, { targetKey: 'voucher_code', foreignKey: 'voucher_code' });
+  };
 
   return Cart;
 }

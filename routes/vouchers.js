@@ -6,6 +6,7 @@ const {User_voucher} = require('../models');
 const {User} = require('../models');
 const {Voucher} = require('../models');
 const {Product_category} = require('../models');
+const {Cart} = require('../models');
 
 const v = new Validator();
 
@@ -24,6 +25,10 @@ router.post('/', async (req, res) => {
   }
 
   const uVouchers = await User_voucher.findAll({ 
+    where: {
+      user_id: req.body.user_id,
+      category_id: req.body.category_id
+    },
     include: [
       {
         model: User
@@ -47,24 +52,10 @@ router.post('/', async (req, res) => {
   });
 });
 
-router.post('/category', async (req, res) => {
-  return res
-  .status(200)
-  .json({
-    code:"200",
-    message: "success"
-  });
-});
-
-router.post('/add-voucher', async (req, res) => {
+router.post('/add-voucher/:user_id/:product_id', async (req, res) => {
   const schema = {
     voucher_code: 'string',
-    voucher_name: 'string',
-    category_id: 'string',
-    user_id: 'string',
-    product_id: 'string',
-    quantity: 'number',
-    price: 'number',
+    voucher_name: 'string'
   }
 
   const validate = v.validate(req.body, schema);
@@ -75,13 +66,57 @@ router.post('/add-voucher', async (req, res) => {
     .json(validate);
   }
 
-  const save = await Cart.create(req.body);
+  const removeVoucher = await Cart.update(
+    {
+      voucher_code: req.body.voucher_code,
+      voucher_name: req.body.voucher_name
+    },{
+      where: {
+        user_id: req.params.user_id,
+        product_id: req.params.product_id
+      }
+    }
+  );
 
   return res
   .status(200)
   .json({
     code:"200",
-    message: "success"
+    message: "Voucher successfuly added"
+  });
+});
+
+router.post('/remove-voucher/:user_id/:product_id', async (req, res) => {
+  const schema = {
+    voucher_code: 'string',
+    voucher_name: 'string'
+  }
+
+  const validate = v.validate(req.body, schema);
+
+  // if(validate.length){
+  //   return res
+  //   .status(400)
+  //   .json(validate);
+  // }
+
+  const removeVoucher = await Cart.update(
+    {
+      voucher_code: req.body.voucher_code,
+      voucher_name: req.body.voucher_name
+    },{
+      where: {
+        user_id: req.params.user_id,
+        product_id: req.params.product_id
+      }
+    }
+  );
+
+  return res
+  .status(200)
+  .json({
+    code:"200",
+    message: "Voucher successfuly removed"
   });
 });
 

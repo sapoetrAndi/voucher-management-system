@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const {Voucher} = require('./Voucher');
+
   const User = sequelize.define('User', {
     id: {
       type: DataTypes.INTEGER,
@@ -53,6 +53,7 @@ module.exports = (sequelize, DataTypes) => {
 
   User.associate = function(models) {
     User.hasMany(models.User_voucher, { foreignKey: 'user_id' });
+    User.hasMany(models.Cart, { foreignKey: 'user_id' });
   };
   return User;
 }

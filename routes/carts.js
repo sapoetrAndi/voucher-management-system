@@ -2,12 +2,15 @@ var express = require('express');
 var router = express.Router();
 const Validator = require('fastest-validator')
 
-// const {User} = require('../models');
+const {User} = require('../models');
 const {Cart} = require('../models');
+const {Product_category} = require('../models');
+const {Product} = require('../models');
+const {Voucher} = require('../models');
 
 const v = new Validator();
 
-router.post('/add-voucher', async (req, res) => {
+router.post('/add-to-cart', async (req, res) => {
   const schema = {
     voucher_code: 'string|optional',
     voucher_name: 'string|optional',
@@ -36,7 +39,7 @@ router.post('/add-voucher', async (req, res) => {
   });
 });
 
-router.post('/remove-voucher', async (req, res) => {
+router.post('/remove-from-cart', async (req, res) => {
   const schema = {
     voucher_code: 'string',
     user_id: 'string'
@@ -66,7 +69,26 @@ router.post('/remove-voucher', async (req, res) => {
 });
 
 router.get('/user-cart/:user_id', async (req, res) => {
-  const cart = await Cart.findOne({ where: { user_id: req.params.user_id } });
+  const cart = await Cart.findAll(
+    { 
+      where: { 
+        user_id: req.params.user_id 
+      },
+      include: [
+        {
+          model: User
+        },
+        {
+          model: Product_category
+        },
+        {
+          model: Product
+        },
+        {
+          model: Voucher
+        }
+      ]
+    });
 
   return res
   .status(200)
