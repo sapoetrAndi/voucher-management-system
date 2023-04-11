@@ -1,4 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
+  const {Voucher} = require('./Voucher');
   const User = sequelize.define('User', {
     id: {
       type: DataTypes.INTEGER,

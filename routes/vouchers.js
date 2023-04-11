@@ -22,14 +22,17 @@ router.post('/', async (req, res) => {
     .status(400)
     .json(validate);
   }
-  // const uVouchers = await User_voucher.findAll({ 
-  //   include: { all: true, nested: true }
-  // });
 
   const uVouchers = await User_voucher.findAll({ 
     include: [
       {
         model: User
+      },
+      {
+        model: Voucher
+      },
+      {
+        model: Product_category
       }
     ]
   });

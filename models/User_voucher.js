@@ -42,14 +42,8 @@ module.exports = (sequelize, DataTypes) => {
 
   User_voucher.associate = function(models) {
     User_voucher.belongsTo(models.User, { foreignKey: 'user_id' });
+    User_voucher.belongsTo(models.Voucher, {targetKey: 'voucher_code', foreignKey: 'voucher_code' });
+    User_voucher.belongsTo(models.Product_category, { foreignKey: 'category_id' });
   };
-
-  // User_voucher.associate = function(models) {
-  //   User_voucher.belongsTo(models.Product_category, { foreignKey: 'category_id' });
-  // };
-
-  // User_voucher.associate = function(models) {
-  //   User_voucher.belongsTo(models.Voucher, { foreignKey: 'voucher_code' });
-  // };
   return User_voucher;
 }

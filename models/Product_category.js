@@ -25,9 +25,9 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'product_categories'
   });
 
-  // Product_category.associate = function(models) {
-  //   Product_category.hasMany(models.User_voucher, { foreignKey: 'category_id' });
-  // };
+  Product_category.associate = function(models) {
+    Product_category.hasMany(models.User_voucher, { foreignKey: 'category_id' });
+  };
 
   return Product_category;
 }

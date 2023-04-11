@@ -1,4 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
+  const {User} = require('./User');
   const Voucher = sequelize.define('Voucher', {
     id: {
       type : DataTypes.INTEGER,
@@ -41,9 +42,9 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'vouchers'
   });
 
-  // Voucher.associate = function(models) {
-  //   Voucher.hasMany(models.User_voucher, { foreignKey: 'voucher_code' });
-  // };
+  Voucher.associate = function(models) {
+    Voucher.hasMany(models.User_voucher, {targetKey: 'voucher_code', foreignKey: 'voucher_code' });
+  };
 
   return Voucher;
 }
