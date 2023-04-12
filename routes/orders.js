@@ -36,17 +36,23 @@ router.post('/checkout', async (req, res) => {
   req.body.total_order = total_order;
   req.body.order_date = new Date();
   const createOrder = await Order.create(req.body);
-
-  // const dOrder = cart.map(i => i.setDataValue('order_id', createOrder.id));
-  // const dOrder = cart.map(i => ({
-  //   order_id: createOrder.id, ...i
-  // }));
   
-  cart.forEach(obj => {
-    obj.dataValues.order_id = createOrder.id;
+  let a = [];
+  let o = {};
+  console.log(o);
+  cart.forEach(obj => {    
+    o.order_id = createOrder.id;
+    o.category_id = obj.category_id;
+    o.user_id = obj.user_id;
+    o.product_id = obj.product_id;
+    o.voucher_code = obj.voucher_code;
+    o.voucher_name = obj.voucher_name;
+    o.quantity = obj.quantity;
+    o.price = obj.price;
+    a.push(o);
   });
 
-  // const insertDetailOrder = await Shipping_information.bulkCreate(cart);
+  const insertDetailOrder = await Shipping_information.bulkCreate(a);
 
   return res
   .status(200)
