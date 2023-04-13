@@ -54,12 +54,23 @@ router.post('/checkout', async (req, res) => {
 
   const insertDetailOrder = await Shipping_information.bulkCreate(a);
 
+  const order = await Order.findAll({
+    include: [
+      {
+        model: Shipping_information,
+        where: {
+          order_id: createOrder.id
+        }
+      }
+    ]
+  });
+
   return res
   .status(200)
   .json({
     code:"200",
     message: "success",
-    order: cart,
+    order: order,
   });
 });
 

@@ -40,5 +40,9 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'orders'
   });
 
+  Order.associate = function(models) {
+    Order.hasMany(models.Shipping_information, {foreignKey: 'order_id' });
+  };
+
   return Order;
 }
